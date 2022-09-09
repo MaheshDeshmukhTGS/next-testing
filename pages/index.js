@@ -1,9 +1,18 @@
 import Head from "next/head";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import styles from "../styles/Home.module.css";
 
 export default function Home() {
   const [loaded, setLoaded] = useState(false);
+  const imgRef = useRef(null);
+
+  useEffect(() => {
+    const image = imgRef.current;
+    if (image && image.complete) {
+      setLoaded(true);
+    }
+  }, []);
+
   console.log(loaded);
   return (
     <div className={styles.container}>
@@ -19,8 +28,9 @@ export default function Home() {
           <h3> {!loaded ? "Loading..." : ""}</h3>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            onLoad={() => setLoaded(true)}
-            style={{ width: "100%", display: `${loaded ? "block" : "none"}` }}
+            ref={imgRef}
+            // onLoad={() => setLoaded(true)}
+            style={{ width: "100%", display: `${loaded ? "inline-block" : "none"}` }}
             src="/images/banner.jpg"
             alt="banner-img"
           />
